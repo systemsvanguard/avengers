@@ -1,0 +1,76 @@
+/*Colour Scheme color choices
+#121aba;	deep blue  
+#1aba12;	deep green
+#e4fce2;	light green
+#ba121a;	maroon red
+#5e12ba;	purple
+#fbd1d3;	pink
+#eee2fc;	light purple
+#fff8dc;	cornsilk
+#faf0e6;	linen
+#f5fffa;	MintCream
+*/
+/* Form Validation colors */
+.error-message {
+  color: red;
+}
+input.ng-dirty.ng-invalid {
+  border-color: red;
+}
+/* Styling for Icons  */
+.form-group .icon {color:#121aba; }
+.navbar-brand .icon {color:#121aba; }
+/* style wells  */
+.list-group-item .well {background-color:#e4fce2;}
+.list-group-item .skills {background-color:cornsilk;}
+.global-wrapper {
+  background: url("../img/background/background_avengers_01.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.panel-heading {
+	background-color:#121aba;
+	font-weight:bold;
+}
+.row .panel .panel-primary {
+	border-color: #121aba;	
+}
+.appname {
+	color:#121aba;
+	font-weight:bold;
+}
+.app-title {
+	color:#1aba12;
+	font-weight:bold;
+}
+.instruction2 {
+	color:#121aba;font-weight:bold;font-size:110%;
+}
+.user-heading {
+	font-weight:bold;
+	text-align: center;
+	color: #121aba;
+}
+.phone_format {
+	font-style: italic;
+	font-size: 70%;
+}
+
+/* Styling for random quotations */
+.quotes_quote  {color:#1aba12;}
+.quotes_source {color:#121aba;font-weight:bold;font-style: italic;}
+.quotations    {font-size: 150%;}
+.highlights {
+	color:#121aba;
+	font-weight:bold;
+}
+/* Striped pattern for rows in the list group on home page */
+li .list-group-item { background: f5fffa; }
+li .list-group-item:nth-child(odd) { background: #faf0e6; }
+.image_choices {
+	font-style: italic;
+	font-size: 80%;
+	color:#121aba;
+}

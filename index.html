@@ -1,0 +1,169 @@
+<!doctype html><html lang="en"><head>    <meta charset="utf-8">    <title>Heroes in Training</title>    <meta name="description" content="A simple contact list manager app made with Angular.js v 1.6.6.">    <meta name="author" content="funtasticapps.com and Ryan Hunter">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    	<link rel="stylesheet" href="libs/bootstrap/v3.2/bootstrap.min.css"> 	<link rel="stylesheet" href="libs/vanguard/styles.css">	<link rel="stylesheet" href="app/app.css">
+</head>
+<body>
+<div class="global-wrapper" ng-app="myApp">
+  <!-- navigation -->
+  <nav class="navbar navbar-default" ng-controller="navCtrl">
+    <div class="container-fluid">
+      <div class="nav-header">
+        <a href="#" class="navbar-brand hidden-xs"><span class="icon icon-ios-home"></span><span class="appname"> Contact Manager - Heroes </span> </a>
+        <ul class="nav navbar-nav">
+          <li ng-repeat="navLink in nav.navItems" ng-class="{active : $index === nav.selectedIndex}">
+            <a class="text-center" ng-click="nav.navClick($index)" ng-href="#/{{navLink}}">{{navLink}}</a>
+          </li>
+        </ul>
+    	</div>
+    </div>
+  </nav>
+  <!---------->
+  <div class="container">
+    <div class="row panel panel-primary" ng-controller="homeCtrl">
+      <div class="panel-heading">
+        <h2 class="panel-title">School Control Panel - League of Heroes</h2>
+      </div>
+      <!--     contact list   	 -->
+      <div class="col-xs-4 panel-body">
+        <ul class="list-group">
+          <li class="list-group-item"> <h2 class="app-title">Avengers in Training:</h2>
+            <input class="form-control" placeholder="Search Your Contacts" type="text" ng-model="searchText" name="formsearch" id="formsearch" style="color:#ba121a;background-color:cornsilk;font-style:italic;font-size:75%;font-weight:bold;">
+			<contact class="list-group-item" ng-repeat="contact in contacts | orderBy: 'name' | filter: searchText"></contact>
+          </li>
+        </ul>
+		<!------>
+		<div class="well">
+		<h2>Code Portfolio</h2>
+		<p>A simple but fun Angular.js and Bootstrap powered <strong>Contact Manager</strong> application by a coder that watches far too many science fiction action flicks.  Coded by <a href="http://www.ryanhunter.org/">Ryan Hunter</a>.  See the <a href="https://github.com/FuntasticApps/avengers">GitHub</a> code source.</p>
+		</div>
+      </div>   
+      <!--   ng-view below       -->
+      <div class="col-xs-8">
+        <div class="list-group panel-body">
+          <div ng-view></div>
+        </div>
+      </div><!--/ col-xs-7 --> 
+    </div><!--/ row panel -->
+  </div><!--/ container -->
+  <!---------->
+      <!-- JS based templates -->
+    <script type="text/ng-template" id="default.html">
+      <div class="alert alert-success text-center" ng-class="{hidden : !removed}"> {{removed}}</div>
+      <div class="list-group-item text-center"><span class="instruction2">Choose a Hero please.</span></div>
+    </script>
+	  <!-- show contact details -->
+    <script type="text/ng-template" id="contact_info.html">
+      <div class="list-group-item">
+        <h3 class="user-heading"> {{currentContact.name}} </h3>
+        <p>Phone #: {{currentContact.phone}}</p>
+		<p>Email: <a ng-href="{{currentContact.email}}">{{currentContact.email}}</a></p>
+        <p>Web Site: <a ng-href="{{currentContact.url}}">{{currentContact.url}}</a></p>
+		<p>Wikipedia: <a ng-href="{{currentContact.wiki}}">{{currentContact.wiki}}</a></p>
+        <p class="highlights">Powers:</p>
+        <p class="well well-lg skills">{{currentContact.skills}}</p>
+        <p>Details:</p>
+        <p class="well well-lg">{{currentContact.notes}}</p>
+        <a ng-href="#/edit/{{contacts.indexOf(currentContact)}}">
+          <button class="btn btn-primary">
+            <span class="icon icon-compose"></span><span> Edit </span>
+          </button>
+        </a>
+
+        <a href="#/">
+		  <button class="btn btn-danger" ng-click="removeContact(currentContact)" confirm="You are about to delete this record.  Proceed with delete?">
+            <span class="icon icon-ios-trash"></span>
+		    <span> Delete </span>
+          </button>
+		</a>
+		<br><br>
+		<img src="img/{{currentContact.image}}" class="rounded float-right" alt="The Avengers - Marvel Comics" width="auto" height="250">
+      </div>
+    </script>
+
+	<!--   Template to add contacts, & edit contacts -->
+    <script type="text/ng-template" id="contact_form.html">
+      <div ng-controller="addContactCtrl">
+        <div class="list-group-item">
+          <form id="frmContactManager" name="frmContactManager" novalidate>
+			  <div class="form-group">  
+				<p>
+				  <span class="icon icon-person"></span>
+				  <span><label for="name">Full Name: </label></span> 
+					<span class="error-message" ng-show="frmContactManager.name.$dirty && frmContactManager.name.$error.required">Please fill in the name field</span>
+					<span class="error-message" ng-show="frmContactManager.name.$dirty && frmContactManager.name.$error.minlength">Name must be at least 2 characters</span>
+				  <input id="name" name="name" class="form-control" type="text" ng-model="currentContact.name"  ng-minlength="2" ng-maxlength="50" required title="Full Name" /> 
+				</p>
+				<p>
+				  <span class="icon icon-android-call"></span>
+				  <span><label for="phone">Phone: </label></span>
+				  <span class="error-message" ng-show="frmContactManager.phone.$dirty && frmContactManager.phone.$invalid">Phone should be 10 numbers.</span>
+				  <input id="phone" name="phone" class="form-control" ng-model="currentContact.phone"   type="tel" pattern="^\d{4}-\d{3}-\d{4}$" required title="Phone Number"/> 
+				</p>				
+				<p>
+				  <span class="icon icon-android-drafts"></span>
+				  <span><label for="email">Email:</label></span>
+				  <input id="email" class="form-control" type="text" ng-model="currentContact.email"  required title="Email Address" /> 
+				</p>
+				<p>
+				  <span class="icon icon-earth"></span>
+				  <span><label for="url">Website:</label></span> 	
+				  <input id="url" class="form-control" type="text" ng-model="currentContact.url"  required title="Website URL" /> 
+				</p>
+				<p>
+				  <span class="icon icon-medal01-1"></span>
+				  <span><label for="skills">Skills & Superpowers:</label></span>
+				</p>
+				<textarea class="form-control" id="skills" rows="3" ng-model="currentContact.skills"></textarea>
+				<p>
+				  <span class="icon icon-clipboard"></span>
+				  <span><label for="notes">Notes & Followup:</label></span>
+				</p>
+				<textarea class="form-control" id="notes" rows="2" ng-model="currentContact.notes"></textarea>
+				<p>
+				  <span class="icon icon-wikipedia"></span>
+				  <span><label for="wikipedia">Wikipedia:</label></span> 			 
+				  <input id="wikipedia" class="form-control" type="text" ng-model="currentContact.wiki"  required title="Wikipedia" placeholder="www.Wikipedia.org" /> 
+				</p>
+				<p>
+				  <span class="icon icon-image"></span>
+				  <span><label for="image">Image:</label></span> 			 
+				  <input id="image" class="form-control" type="text" ng-model="currentContact.image"  required title="Image" value="avengers1.png" placeholder="avengers1.png" /> 
+				</p>
+				<p class="image_choices">Available image choices in the directory are : black_widow.png, captain_america.png, hawkeye.png, hulk.png, iron_man.png, maria_hill.png, nick_fury.png, thor.png, vision.png, warmachine.png, and wasp.png</p>
+			  </div>
+		  </form>
+          <a ng-if="path === '/Add' " ng-href="#/contact-info/{{ contacts.length - 1 }}" ng-click="addContact()">
+            <button class="btn btn-success">
+             <span class="icon icon-person-add"></span>
+             <span> Add</span>
+            </button>
+          </a>
+          <a ng-if="path !== '/Add'" ng-href="#/contact-info/{{index}}">
+            <button class="btn btn-success">
+             <span class="icon icon-checkmark-circled"></span>
+             <span> Save Edits</span>
+            </button>
+          </a>
+          <a href="#/">
+            <button class="btn btn-warning">
+              <span class="icon icon-ios-trash-outline"></span><span>  Cancel</span>
+            </button>
+          </a>
+        </div>
+      </div>
+    </script>	
+	<!-- repeater template -->
+    <script type="text/ng-template" id="contact.html">
+      <a ng-href="#/contact-info/{{contacts.indexOf(contact)}}">
+        {{contact.name}}
+      </a>
+    </script>  
+  <!---------->
+</div><!--/ global-wrapper -->
+    <!-- JS files -->
+	<script src="libs/jquery.min.js"></script>
+	<script src="libs/bootstrap/v3.2/bootstrap.min.js"></script>
+	<script src="libs/angularjs/v1.2.1/angular.min.js"></script>
+	<script src="libs/angularjs/v1.2.1/angular-route.min.js"></script>
+	<script src="app/contacts.js"></script> 
+	<script src="app/app.js"></script>
+</body>
+</html>
